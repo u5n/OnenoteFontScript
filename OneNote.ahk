@@ -1,171 +1,639 @@
-#SingleInstance force ;不弹出 是否重新加载的消息
-
+#SingleInstance force
+global Defaultfont:="con" ;consolas
+global MathFont="cam" ;cambria math
+global codeFont="fir" ;firacode 
+global font:=Defaultfont
 global en := DllCall("LoadKeyboardLayout", "Str", "00000409", "Int", 1)
-global zn := DllCall("LoadKeyboardLayout", "Str", "00000804", "Int", 1)
-global font:="con"
-global chfont:="华文新魏"
+global ch := DllCall("LoadKeyboardLayout", "Str", "00000809", "Int", 1)
+global lang :=DllCall("GetKeyboardLayout", Int,DllCall("GetWindowThreadProcessId", int,WinActive("A"), Int,0))
+global fontBarPos:=8
 
-;consolas->consolas;fira->fira code;cambria->cambria math 
-;需要把字体设置在快速访问工具栏,位置8
+global lineChange:=1
 
-;;;;;;;;ONENOTE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#IfWinActive, ahk_class Framework::CFrame
-
-F1:: 
-  Send !f
-  Send T
-  Send !f
-  ;;设置consolas
-  Send c
-  Loop 15{
-    Send {Down}
-  }
-  Send {Enter}{Enter}
-
-^F1::
-  Send !f
-  Send T
-  Send !f
-  ;;设置华文新魏
-  Send y
-  Loop 23{
-    Send {Down}
-  }
-  Send {Enter}{Enter}
-  return
-
-;;标题栏部分
-  !^1::
-    Send ^!1{Esc} ;if not select, esc not use ; else cancel select
-    Send ^a 
-    SetFon()
-    return
-  !^2::
-    Send ^!2{Esc}
-    Send ^a
-    SetFon()
-    return
-  !^3::
-    Send ^!3{Esc}
-    Send ^a
-    SetFon()
-    return
-  !^4::
-    Send ^!4{Esc}
-    Send ^a
-    SetFon()
-    return
-  !^5::
-    Send ^!5{Esc}
-    Send ^a
-    SetFon()
-    return
-  !^6::
-    Send ^!6{Esc}
-    Send ^a
-    SetFon()
-    return
-
-  !^0::
-    send !^0{Esc}
-    Send ^a
-    SetFon()
-    return
-
-;;;cambria math字体的开关
-F3::
-    if(font="con"){
-      font:="cam"
-      SetEnglish()
-      Send !8
-      Send cambria math{Enter}{Esc}
-    } else {
-      font:="con"
-    }
-    return
-
-SetFon(){
-    lang :=DllCall("GetKeyboardLayout", Int,DllCall("GetWindowThreadProcessId", int,WinActive("A"), Int,0))
-    
-    Send !8
-
-    if (lang = zn){
-      SetEnglish()
-
-      SetFon() 
-      
-      SetChinese()
-      ;加入这段是为了在 选择了一大段字 时也能更改字体
-    } else {
-
-      Send %font%{Enter}{esc}{esc}
-    }
-    
+#IfWinActive, ahk_class Framework::CFrame 
+#.::
+  send %A_Language%
+return
+SetEnglish(){
+  PostMessage, 0x50, 0, %en%,,  A
 }
-
-shift:: ;此处对应你自定义的OneNote内专用的切换输入法快捷键
-  send {Ctrl Down}{Shift down}{ctrl up}{shift up} ;此处对应系统切换中英输入法的快捷键
-  ;获取当前输入法
+SetChinese(){
+  PostMessage, 0x50, 0, %ch%,, A
+}
+shift::
+  send {Ctrl Down}{Shift down}{ctrl up}{shift up}
   lang :=DllCall("GetKeyboardLayout", Int,DllCall("GetWindowThreadProcessId", int,WinActive("A"), Int,0))
-  
-  if (lang = en){
-      Send !8  ;此处对应 选中字体栏 的快捷键,我把字体栏 放在了快速访问工具栏
-      Send con ;consolas
-      Send {enter}{esc}{esc}
+  return
+F3::
+  if(font=Defaultfont){
+    font:=MathFont
+  } else {
+    font:=Defaultfont
   }
+  setFonTitle()
   return
 
-;;;在表格左侧插入一列
-;;;overdriven and ignore TIM_QQ shortcut 
+;;;;shortcuts;;;;;
+
+;;类似于 idea 的选择功能
+  ^w::
+  Send ^+{Left}
+  return
+  ^+w::
+  Send ^+{Right}
+  return
+
+;重命名
+F2::Send {RButton}R
+return
+
+;删除复制选择行
+^d::Send ^a^c{Right}^v
+return
+^!BS::Send ^a{BS}
+return
+^LButton::Send {LButton Down}{LButton Up}^a
+return
+
+^!#w::
+^!w::
+  Send !6{1}{Tab}{1}{Enter}
+
+  a:=font
+
+  font:=codeFont
+  SetFonTitle()
+  font:=a 
+
+  if (GetKeyState("LWin","P")){
+    SetEnglish()
+    send {{}{}}{Left}{Enter}{Enter}{Left}{Tab}{Left}{Left}
+  }
+  lineChange=0
+return
+
 ^!e::
   send !JLL
 return
-;;;重命名
-  F2::Send {RButton}R
-return
-;;;复制行
-  ^d::Send ^a^c{Right}^v
+;;;函数部分
+
+
+SetFon(){
+    Send {altDown}%fontBarPos%{AltUp}
+    Send %font%{Enter}{esc}{esc}
+}
+SetFonTitle(){
+    
+    if (lang = en){ 
+      SetFon()
+    } else {
+      SetEnglish()
+      SetFon()
+      SetChinese()
+    }
+}
+
+;;标题栏部分
+  ^!1::
+    Send ^!1{Esc}
+    Send ^a 
+    SetFonTitle()
+    return
+  ^!2::
+    Send ^!2{Esc}
+    Send ^a 
+    SetFonTitle()
+    return
+  ^!3::
+    Send ^!3{Esc}
+    Send ^a 
+    SetFonTitle()
+    return
+  ^!4::
+    Send ^!4{Esc}
+    Send ^a 
+    SetFonTitle()
+    return
+  ^!5::
+    Send ^!5{Esc}
+    Send ^a 
+    SetFonTitle()
+    return
+  ^!6::
+    Send ^!6{Esc}
+    Send ^a 
+    SetFonTitle()
+    return
+  ^!0::
+    send ^!0{Esc}
+    send ^a
+    SetFonTitle()
+    return
+
+;;;;;截取,处理所有正常的输入
+~Up up::
+  lineChange = 1
   return
-;;;删除行
-^!BS::Send ^a{BS}
+~LButton up::
+  lineChange = 1
+  return
+~Down up::
+  lineChange = 1
+  return
+Enter::
+  send {Enter}
+  lineChange = 1
+  return
+tab::
+  send {tab}
+  lineChange = 1
+  return
+^a::
+  send ^a
+  lineChange=1
+  return
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+1::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 1
 return
-;;;;选中一行
-^LButton::Send {LButton Down}{LButton Up}^a
+2::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 2
 return
+3::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 3
+return
+4::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 4
+return
+5::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 5
+return
+6::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 6
+return
+7::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 7
+return
+8::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 8
+return
+9::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 9
+return
+0::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw 0
+return
+q::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw q
+return
+w::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw w
+return
+e::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw e
+return
+r::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw r
+return
+t::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw t
+return
+y::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw y
+return
+u::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw u
+return
+i::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw i
+return
+o::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw o
+return
+p::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw p
+return
+a::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw a
+return
+s::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw s
+return
+d::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw d
+return
+f::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw f
+return
+g::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw g
+return
+h::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw h
+return
+j::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw j
+return
+k::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw k
+return
+l::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw l
+return
+z::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw z
+return
+x::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw x
+return
+c::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw c
+return
+v::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw v
+return
+b::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw b
+return
+n::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw n
+return
+m::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw m
+return
+-::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw -
+return
+=::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  send {=}
+return
+[::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw [
+return
+]::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw ]
+return
+`;::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw `;
+return
+'::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw '
+return
+,::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw `,
+return
+.::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw .
+return
+/::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw /
+return
+\::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw \
+return
+|::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw |
+return
+<::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw <
+return
+>::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw >
+return
+?::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw ?
+return
+:::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw :
+return
+"::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw "
+return
+{::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw {
+return
+}::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw }
+return
+(::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw (
+return
+)::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw )
+return
+_::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw _
+return
++::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw +
+return
+`::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw ``
+return
+~::
+  if(lineChange = 1 && lang = en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw ~
+return
+
 #ifWinactive
-
-;编辑与运行某个ahk脚本
-
-; #^e::
-;  Run,notepad "???alt+q.ahk"
-; return
-; #^r::
-;   Send ^s ;保存
-;   Run,open "???\alt+q.ahk"
-; return
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;函数区;;;;;;;;;;;;
-SetEnglish(){
-  PostMessage, 0x50, 0, %en%,, A
-}
-SetChinese(){
-  PostMessage, 0x50, 0, %zn%,, A
-}
-
-;;;新建单个方框,并设置为fira code 字体
-
-; ^!#w::
-; ^!w::
-; Send !6{1}{Tab}{1}{Enter}
-
-; a:=font
-; msgbox %a%
-; ;;;;TODO var knows
-; font:="fir"
-; SetFon()
-; font:=a 
-
-; if (GetKeyState("LWin","P"))
-;   send {{}{}}{Left}{Enter}{Enter}{Left}{Tab}{Left}{Left}
-
-; return
