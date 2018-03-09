@@ -36,6 +36,7 @@ only influence OneNote Applications
 shortcuts | functions
  :--: | :----:
 F3|toggle the use of mathfont and defaultfont
+F2|toggle the use of codefont and defaultfont
 ^ |means ctrl
 +|means alt
 !|means shift

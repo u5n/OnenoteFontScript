@@ -25,14 +25,23 @@ shift::
   lang :=DllCall("GetKeyboardLayout", Int,DllCall("GetWindowThreadProcessId", int,WinActive("A"), Int,0))
   return
 F3::
-  if(font=Defaultfont){
-    font:=MathFont
-  } else {
+  if(font= MathFont){
     font:=Defaultfont
+  } else {
+    font:=MathFont
   }
-  setFonTitle()
+  SetEnglish()
+  setFon()
   return
-
+^F3::
+  if(font = codeFont){
+    font:=Defaultfont
+  } else {
+    font:=codeFont
+  }
+  SetEnglish()
+  setFon()
+  return
 ;;;;shortcuts;;;;;
 
 ;;类似于 idea 的选择功能
@@ -58,12 +67,6 @@ return
 ^!#w::
 ^!w::
   Send !6{1}{Tab}{1}{Enter}
-
-  a:=font
-
-  font:=codeFont
-  SetFonTitle()
-  font:=a 
 
   if (GetKeyState("LWin","P")){
     SetEnglish()
@@ -129,7 +132,7 @@ SetFonTitle(){
     send ^a
     SetFonTitle()
     return
-
+    
 ;;;;;截取,处理所有正常的输入
 ~Up up::
   lineChange = 1
@@ -151,6 +154,10 @@ tab::
 ^a::
   send ^a
   lineChange=1
+  return
+BackSpace::
+  send {BackSpace}
+  lineChange = 1
   return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -635,5 +642,68 @@ return
 
   sendRaw ~
 return
+!::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
 
+  sendRaw !
+return
+@::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw @
+return
+#::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw #
+return
+$::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw $
+return
+%::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  send `%
+return
+^::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw ^
+return
+&::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw &
+return
+*::
+  if(lineChange = 1 && lang == en){
+    SetFon()
+    lineChange = 0
+  }
+
+  sendRaw *
+return
 #ifWinactive
