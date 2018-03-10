@@ -94,74 +94,52 @@ SetFonTitle(){
 }
 
 ;;标题栏部分
-  ^1::
+  ^!1::
     Send ^!1
     if (font = MathFont){
       send {Esc}^a
       SetFonTitle()
     }
     return
-  ^2::
+  ^!2::
     Send ^!2
     if (font = MathFont){
       send {Esc}^a
       SetFonTitle()
     }
     return
-  ^3::
+  ^!3::
     Send ^!3
     if (font = MathFont){
       send {Esc}^a
       SetFonTitle()
     }
     return
-  ^4::
+  ^!4::
     Send ^!4
     if (font = MathFont){
       send {Esc}^a
       SetFonTitle()
     }
     return
-  ^5::
+  ^!5::
     Send ^!5
     if (font = MathFont){
       send {Esc}^a
       SetFonTitle()
     }
     return
-  ^6::
+  ^!6::
     Send ^!6
     if (font = MathFont){
       send {Esc}^a
       SetFonTitle()
     }
     return
-  ^0::
+  ^!0::
     send ^!0
     send {Esc}^a
     SetFonTitle()
-    return
-
-  ^!1::
-    send ^1
-    return
-  ^!2::
-    send ^2
-    Return
-  ^!3::
-    send ^3
-    return
-  ^!4::
-    send ^4
-    return
-  ^!5::
-    send ^5
-    return
-  ^!6::
-    send ^6
-    return
-  ^!0::
-    send ^0
     return
 
 
