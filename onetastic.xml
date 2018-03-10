@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Macro name="Section Font fix" category="Code" description="所在分区,全部calibri字体改为consolas" version="19">
+  <ForEach var="page">
+    <Array>GetCurrentSection().pages</Array>
+    <ForEach var="outline">
+      <Array>$page.outlines</Array>
+      <ForEach var="p">
+        <Array>$outline.paragraphs</Array>
+        <If>
+          <Condition>String_StartsWith($p.style, "h", false)</Condition>
+          <Expression>$p.fontName = "Consolas"</Expression>
+        </If>
+      </ForEach>
+    </ForEach>
+    <ForEach var="Title">
+      <Array>QueryObjects("Title", $page)</Array>
+      <ForEach var="Paragraph">
+        <Array>QueryObjects("Paragraph", $Title)</Array>
+        <Expression>$Paragraph.fontName = "Consolas"</Expression>
+      </ForEach>
+    </ForEach>
+  </ForEach>
+</Macro>

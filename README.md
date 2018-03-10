@@ -1,87 +1,91 @@
-this is a small procedure try to solved the chinese (or other langs) font problem in Onenote2016 in windows system ( UWP ×)
-, If you don't want to replace the system font;
+# ONENOTE FONT PLUGIN
 
-And it can also provide another font like cambria math if you have substituted your system font
+<!-- TOC -->
 
-使用版本: OneNote2016 windows (UWP其实也可以,只是代码重复度太高了)
+- [ONENOTE FONT PLUGIN](#onenote-font-plugin)
+    - [用法](#用法)
+        - [使用release上的exe文件](#使用release上的exe文件)
+        - [使用ahk文件](#使用ahk文件)
+    - [功能和快捷键](#功能和快捷键)
+    - [主要问题](#主要问题)
+    - [其他可用语言](#其他可用语言)
 
-适用于 无法替换系统字体 或者 经常在其他电脑使用的情况
+<!-- /TOC -->
 
-release上也提供伪装成calibri后的consolas字体,以及 已替换系统字体后的Cambria math 书写插件
+关于 onenote2016 中英文切换问题,
+最好是更改系统字体,如果需要分享出去,且页面上有各种字体,就适合用onetastic的[宏](/onetastic.cs)
 
-- [if you don't want to substitude system font](#if-you-dont-want-to-substitude-system-font)
-    - [first](#first)
-- [run from the release file](#run-from-the-release-file)
-    - [run from .ahk source file](#run-from-ahk-source-file)
-    - [Usage](#usage)
-    - [disAdvantage](#disadvantage)
-- [if you already substitute system font](#if-you-already-substitute-system-font)
-- [appendix](#appendix)
+1. 如果因为种种原因不替换系统字体,或者不方便
+    * 本脚本可以在流畅的情况下,处理大部分用英文输入法输入英文字体的情况,转换为你想要的字体,只要不随便输入
+    * 提供其他有用的[快捷键功能](#功能和快捷键)
 
-# if you don't want to substitude system font
+1. 如果已经把系统上的calibri字体替换了
+    * 本脚本另一个版本提供 数学字体 可以在编写数学笔记时候使用
+    * 提供其他[快捷键功能](#功能和快捷键)
 
-## first
 
-put the font bar in the 8th position of quick access bar
+适用于 onenote2016 Windows,onenote UWP没做
+同时也适用于各种非中文简体语言
+[其他可用语言](#其他可用语言)
 
-![Logo](/logo.png)
+## 用法
+
+将 字体栏 放在 快速启动栏 的第八个位置
 ![example](/1.jpg)
 
-# run from the release file
+### 使用release上的exe文件
 
-1. 只有中文用户才能用release上的exe文件
+1. 选择并下载release上exe文件
 2. 将快捷方式放在↓以便开机启动
 > C:\Users\%user_name%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 
-## run from .ahk source file
+### 使用ahk文件
 
-1. download autohotkey...
-1. change the variables %fontBarPos%/Defaultfont/Mathfont/codefont to the font you like
-1. change the shortcut like (LShift) in your way
-1. edit the zn variable
+1. 下载 OneNote.ahk 文件 或者选择 AfterSubstituteFont.ahk 文件
+1. 自定义好变量 %fontBarPos%/Defaultfont/Mathfont/codefont 
+1. 特别注意 Lshift 将用来 切换输入法,所以输入法最好只保留两个, 在这里 Lshift 被映射成了 ctrl+shift
+1. 变量 ch 对应用户使用的语言[其他可用语言](#其他可用语言)
 
-    query the locale in your [country](#appendix) or press `winkey`+`.` in OneNote ,
+    query the locale in your  or press `winkey`+`.` in OneNote ,
 
 > HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout\DosKeybCodes
 1. run on startup:add shortcut to the following address
 
 > C:\Users\%user_name%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 
-## Usage
+## 功能和快捷键
 
-only influence OneNote Applications
+只影响 OneNote 应用
+
+ 标识符 | 含义
+---|--- 
+^ | ctrl
++|alt
+!|shift
 
 shortcuts | functions
  :--: | :----:
-F3|toggle the use of mathfont and defaultfont
-F2|toggle the use of codefont and defaultfont
-^ |means ctrl
-+|means alt
-!|means shift
-leftshift|change input method
+^!0|改变一行的字体
+^F3|改变选择内容的字体
 ^w|forwards selection
 ^+w|backwards selection
+leftshift|change input method
 ^d|duplicate line
 ^LeftMouseButton|select line
 ^!Backspace|delete line
 F2|rename
-^!w|create table(you should put the insert table option in the 6th position of quick access bar)
-^!#(win)w|create table with brace
 ^!e|create column in the left (in a table)
-^!0|format with %defaultFont%
+F3|toggle the use of mathfont and defaultfont
+F2|toggle the use of codefont and defaultfont
+^!w|create table(you should put the insert table option in the 6th position of quick access bar)
+^!`winkey`w|create table with brace
 
-## disAdvantage
+## 主要问题
 
-中文之间不能改变符号
-中文输入法的英文状态输出字体仍然是 calibri
+* 中文之间不能改变字体
+* 中文输入法的英文状态输出字体仍然是 不可预估的
 
-# if you already substitute system font
-
-use another release file or sourcefile
-
-same procedure as above.
-
-# appendix
+## 其他可用语言
 
 locale|country
 -------|------
@@ -214,3 +218,4 @@ locale|country
 0443|Uzbek_Latin
 0843|Uzbek_Cyrillic
 042a|Vietnamese
+

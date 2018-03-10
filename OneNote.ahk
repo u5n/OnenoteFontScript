@@ -4,7 +4,7 @@ global MathFont="cam" ;cambria math
 global codeFont="fir" ;firacode 
 global font:=Defaultfont
 global en := DllCall("LoadKeyboardLayout", "Str", "00000409", "Int", 1)
-global ch := DllCall("LoadKeyboardLayout", "Str", "00000809", "Int", 1)
+global ch := DllCall("LoadKeyboardLayout", "Str", "00000804", "Int", 1)
 global lang :=DllCall("GetKeyboardLayout", Int,DllCall("GetWindowThreadProcessId", int,WinActive("A"), Int,0))
 global fontBarPos:=8
 
