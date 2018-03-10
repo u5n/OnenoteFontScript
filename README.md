@@ -1,29 +1,47 @@
-# OnenoteFontPlugin
+this is a small procedure try to solved the chinese (or other langs) font problem in Onenote2016 in windows system ( UWP ×)
+, If you don't want to replace the system font;
 
-this is a small procedure try to solved the chinese (or other langs) font problem in Onenote2016 in windows system (not UWP)
-, If don't replace the system font;
+And it can also provide another font like cambria math if you have substituted your system font
 
-And it can also provide another font like cambria math
+使用版本: OneNote2016 windows (UWP其实也可以,只是代码重复度太高了)
 
-## Run
+适用于 无法替换系统字体 或者 经常在其他电脑使用的情况
 
-### first
+release上也提供伪装成calibri后的consolas字体,以及 已替换系统字体后的Cambria math 书写插件
+
+- [if you don't want to substitude system font](#if-you-dont-want-to-substitude-system-font)
+    - [first](#first)
+- [run from the release file](#run-from-the-release-file)
+    - [run from .ahk source file](#run-from-ahk-source-file)
+    - [Usage](#usage)
+    - [disAdvantage](#disadvantage)
+- [if you already substitute system font](#if-you-already-substitute-system-font)
+- [appendix](#appendix)
+
+# if you don't want to substitude system font
+
+## first
 
 put the font bar in the 8th position of quick access bar
-![pic](1.gif)
 
-### run from the release file
+![Logo](/logo.png)
+![example](/1.jpg)
+
+# run from the release file
 
 1. 只有中文用户才能用release上的exe文件
 2. 将快捷方式放在↓以便开机启动
 > C:\Users\%user_name%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 
-### run from .ahk source file
+## run from .ahk source file
 
 1. download autohotkey...
 1. change the variables %fontBarPos%/Defaultfont/Mathfont/codefont to the font you like
 1. change the shortcut like (LShift) in your way
-1. query the locale in your [country](#appendix) or press winkey and . ,and edit the zn variable
+1. edit the zn variable
+
+    query the locale in your [country](#appendix) or press `winkey`+`.` in OneNote ,
+
 > HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout\DosKeybCodes
 1. run on startup:add shortcut to the following address
 
@@ -47,7 +65,7 @@ leftshift|change input method
 ^LeftMouseButton|select line
 ^!Backspace|delete line
 F2|rename
-^!w|create table
+^!w|create table(you should put the insert table option in the 6th position of quick access bar)
 ^!#(win)w|create table with brace
 ^!e|create column in the left (in a table)
 ^!0|format with %defaultFont%
@@ -57,7 +75,13 @@ F2|rename
 中文之间不能改变符号
 中文输入法的英文状态输出字体仍然是 calibri
 
-## appendix
+# if you already substitute system font
+
+use another release file or sourcefile
+
+same procedure as above.
+
+# appendix
 
 locale|country
 -------|------

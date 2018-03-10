@@ -72,7 +72,7 @@ return
     SetEnglish()
     send {{}{}}{Left}{Enter}{Enter}{Left}{Tab}{Left}{Left}
   }
-  lineChange=0
+  lineChange=1
 return
 
 ^!e::
@@ -155,10 +155,7 @@ tab::
   send ^a
   lineChange=1
   return
-BackSpace::
-  send {BackSpace}
-  lineChange = 1
-  return
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -643,7 +640,7 @@ return
   sendRaw ~
 return
 !::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -651,7 +648,7 @@ return
   sendRaw !
 return
 @::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -659,7 +656,7 @@ return
   sendRaw @
 return
 #::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -667,7 +664,7 @@ return
   sendRaw #
 return
 $::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -675,7 +672,7 @@ $::
   sendRaw $
 return
 %::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -683,7 +680,7 @@ return
   send `%
 return
 ^::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -691,7 +688,7 @@ return
   sendRaw ^
 return
 &::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
@@ -699,7 +696,7 @@ return
   sendRaw &
 return
 *::
-  if(lineChange = 1 && lang == en){
+  if(lineChange = 1 && lang = en){
     SetFon()
     lineChange = 0
   }
