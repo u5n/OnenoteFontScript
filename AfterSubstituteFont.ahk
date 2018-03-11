@@ -83,13 +83,14 @@ SetFon(){
     Send %font%{Enter}{esc}{esc}
 }
 SetFonTitle(){
-    
+    lang :=DllCall("GetKeyboardLayout", Int,DllCall("GetWindowThreadProcessId", int,WinActive("A"), Int,0))
+
     if (lang = en){ 
       SetFon()
     } else {
       SetEnglish()
       SetFon()
-      SetChinese()
+      settimer,SetChinese,-200
     }
 }
 
