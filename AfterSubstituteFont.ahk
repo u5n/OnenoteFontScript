@@ -1,4 +1,4 @@
-#SingleInstance force
+﻿#SingleInstance force
 global Defaultfont:="con" ;consolas
 global MathFont="cam" ;cambria math
 
@@ -73,7 +73,7 @@ return
 return
 
 ^!e::
-  send !JLL
+  send !JL
 return
 ;;;函数部分
 

@@ -76,7 +76,7 @@ return
 return
 
 ^!e::
-  send !JLL
+  send !JL
 return
 ;;;º¯Êı²¿·Ö
 
