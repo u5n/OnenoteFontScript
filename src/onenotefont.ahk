@@ -5,19 +5,19 @@ global MathFont="cambria math" ;cambria math
 global font:=defaultFont
 global en := DllCall("LoadKeyboardLayout", "Str", "00000409", "Int", 1)
 global ch := DllCall("LoadKeyboardLayout", "Str", "00000804", "Int", 1)
-global fontBarPos:=8 ; 字体栏所在位置
-global TableBarPos:=6 ; 表格栏所在位置
+global fontBarPos:=9 ; 字体栏所在位置
+global TableBarPos:=8 ; 表格栏所在位置
 
 #IfWinActive, ahk_class Framework::CFrame 
   
 ;;;;;; 字体更改部分 ;;;;
   ; 查询当前语言编码
   #.::
-    send %A_Language%
+    MsgBox %A_Language%
     
   ; 当前行字体更改为 defaultFont
     F1::
-      send ^
+      send ^a
       font:=defaultFont
       SetEnglish()
       setFon()
