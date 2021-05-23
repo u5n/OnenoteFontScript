@@ -1,3 +1,5 @@
+; 这个文件主要尝试截取所有用户输入, 一旦检测到输入就立刻显示设置字体, 如果不是受限于快速启动栏, 不失为一个好方法
+; 由于初学的缘故, 代码不够精简, 多有冗余
 #SingleInstance force
 global Defaultfont:="con" ;consolas
 global MathFont="cam" ;cambria math

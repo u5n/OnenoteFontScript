@@ -1,68 +1,53 @@
-# ONENOTE FONT PLUGIN
+# ONENOTE FONT AHK SCRIPT
 
 <!-- TOC -->
 
-- [ONENOTE FONT PLUGIN](#onenote-font-plugin)
-    - [用法](#用法)
-        - [然后使用release上的exe文件](#然后使用release上的exe文件)
-        - [或者使用ahk文件](#或者使用ahk文件)
-    - [功能和快捷键](#功能和快捷键)
-    - [主要问题](#主要问题)
-    - [其他可用语言](#其他可用语言)
+- [ONENOTE FONT AHK SCRIPT](#onenote-font-ahk-script)
+  - [是什么](#是什么)
+  - [我采取的方案:](#我采取的方案)
+  - [前提](#前提)
+  - [如何使用这个脚本](#如何使用这个脚本)
+  - [功能和快捷键](#功能和快捷键)
+  - [附表 其他语言对应编码](#附表-其他语言对应编码)
 
 <!-- /TOC -->
 
-关于 onenote2016 中英文切换问题,
-最好是更改系统字体,如果需要处理复杂的情况,就适合用onetastic的[宏](/onetastic.cs)
-这个插件主要是用来 给"系统默认的美式键盘"状态下的字体设置格式(比如consolas,但不能是 宋体),<sub>如果想让 中英文都用中文字体的话, 插件没这个效果, 可以 全程用 中文输入法, shift切换中英文状态, 英文状态输入英语单词,alt+back 键就可以格式化之前打过的单词, 只用 按一次 alt+back</sub>
+## 是什么
 
-1. 如果因为种种原因不替换系统字体,或者不方便
-    * 本脚本可以在流畅的情况下,处理大部分用美式键盘输入英文字体的情况,转换为你想要的字体,只要不特快的输入
-    * 提供其他有用的[快捷键功能](#功能和快捷键)
+这是一个简单的autohotkey脚本, 用来应对onenote2016[中英文切换问题](https://www.zhihu.com/question/30089364)
 
-1. 如果已经把系统上的calibri字体替换了
-    * 本脚本另一个版本提供 数学字体 可以在编写数学笔记时候使用
-    * 提供其他[快捷键功能](#功能和快捷键)
+经过我研究发现, 如果要用onenote2016, 这个问题应该永远无完美解法
 
+##  我采取的方案:
 
-适用于 onenote2016 Windows,onenote UWP没做
-同时也适用于各种非中文简体语言
-[其他可用语言](#其他可用语言)
+我习惯中文使用"华文新魏"字体, 英文使用consolas等宽字体
 
-## 用法
+首先, 我用FontCreator12制作了一份魔改的"华文新魏"字体, 把"华文新魏"里面的每个英文字母都改成了consolas里面的样式. 具体时间可能要花费整个下午, 颇为复杂
+
+其次, 当我用手机端打开onenote笔记时, 会发现还是字体还是不对, 并且, 当我使用发送到博客选项时, 字体也会问题. 这个脚本用来处理这个问题, 目前onetastic宏可以写出这种功能, 但是使用颇为不便, 同样是脚本, 不如安装autohotkey来的方便, 此外还可以手动编写一些非常有用的快捷键
+
+## 前提
+
+* 必须是onenote2016 windows
+* 安装autohotkey
+
+## 如何使用这个脚本
 
 1. 首先将 OneNote总设置里的字体改为你想要的中文字体
-2. 将 字体栏 放在 快速启动栏 的第八个位置,**并且在框上输一次 想要的英文字体(不可以是中文系字体),按回车,这样只输入字体的前几个字,OneNote会自动补全后面的字** ,
-<sub>同时少数字体在我的电脑上无效,比如lingoes unicode</sub>
+2. 将 字体栏 放在 快速启动栏 的第八个位置, **并且在框上输一次 想要的英文字体(不可以是中文系字体),按回车,这样只输入字体的前几个字,OneNote会自动补全后面的字** ,
 
-![example](/1.jpg)
+![example](asset/1.jpg)
 
-### 然后使用release上的exe文件
-
-1. 选择并下载release上exe文件
-2. 将快捷方式放在↓以便开机启动
-> C:\Users\%user_name%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
-3. 这里默认是consolas字体,
-
-### 或者使用ahk文件
-
-1. 下载 OneNote.ahk 文件 或者选择 AfterSubstituteFont.ahk 文件
-1. 自定义好变量 %fontBarPos%/Defaultfont/Mathfont/codefont
-1. 特别注意 Lshift 将用来 切换输入法,所以输入法最好只保留两个, 在这里 Lshift 被映射成了 ctrl+shift
-1. 变量 ch 对应用户使用的语言[其他可用语言](#其他可用语言)
-
-    query the locale in your  or press `winkey`+`.` in OneNote ,
-
-> HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout\DosKeybCodes
-1. run on startup:add shortcut to the following address
-
-> C:\Users\%user_name%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
-
+3. 下载`src/onenotefont.ahk`文件, 
+    1. 自定义好全局变量 `fontBarPos` `Defaultfont` `Mathfont` `TableBarPos`
+    2. 文件中Chinese对应编码`"00000804"`也可以改成其他编码, 可以按快捷键 `winkey`+`.` 查询, 也可以在注册表` HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout\DosKeybCodes`中查询
+    3. `ahk`文件是可以编译成`exe`文件的, 修改好代码编译后, 可以不用再安装autohotkey
+   
 ## 功能和快捷键
 
-只影响 OneNote 应用
+只会影响 OneNote 应用
 
- 标识符 | 含义
+ 用来简写的符号 | 表示的快捷键
 ---|---
 ^ | ctrl
 +|alt
@@ -70,27 +55,17 @@
 
 shortcuts | functions
  :--: | :----:
-^!0|改变一行的字体
-^F3|改变选择内容的字体
-^w|forwards selection
-^+w|backwards selection
-leftshift|change input method
-^d|duplicate line
-^LeftMouseButton|select line
-^!Backspace|delete line
-F2|rename
-^!e|create column in the left (in a table)
-F3|toggle the use of mathfont and defaultfont
-F2|toggle the use of codefont and defaultfont
-^!w|create table(you should put the insert table option in the 6th position of quick access bar)
-^!`winkey`w|create table with brace
+F1|设置当前行的字体为defaultFont
+^F1|设置整页的字体为defaultFont
+^w|向前选择
+^+w|向后选择
+^d|复制当前行
++del|删除当前行
+F2|重命名
+^!e|如果光标在表格中, 在光标左侧插入一列(要把表格栏也放在快速启动栏上)
+!鼠标滚轮|左右滚动页面
 
-## 主要问题
-
-* 中文输入法的英文状态输出字体仍然是 不可预估的
-* 复杂快速的输出会出问题
-
-## 其他可用语言
+## 附表 其他语言对应编码
 
 locale|country
 -------|------
